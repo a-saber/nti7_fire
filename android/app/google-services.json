@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "710697058216",
+    "project_id": "nti7-b6572",
+    "storage_bucket": "nti7-b6572.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:710697058216:android:c442c285d948a9709f679d",
+        "android_client_info": {
+          "package_name": "com.example.nti7_fire"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCtLV1jo7jRESaj7vysBXIn5BR0rI7lDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
