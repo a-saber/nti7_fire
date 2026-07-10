@@ -63,8 +63,7 @@ class _RegisterViewState extends State<RegisterView> {
         email: email.text,
         password: password.text,
       );
-      var userId = credential.user?.uid;
-      await FirebaseFirestore.instance.collection('users').doc(userId)
+      await FirebaseFirestore.instance.collection('users').doc(credential.user?.uid)
       .set({
         'name': name.text,
         'email': email.text,
