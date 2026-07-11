@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'features/auth/views/login_view.dart';
-import 'features/home/views/add_task_view.dart';
+import 'features/home/views/add_post_view.dart';
 import 'features/home/views/home_view.dart';
 import 'firebase_options.dart';
 
@@ -35,7 +35,7 @@ class MyApp extends StatelessWidget {
       designSize: Size(375, 812),
       builder: (context, c)=> MaterialApp(
         title: 'Flutter Firebase Demo',
-        home: FirebaseAuth.instance.currentUser == null ? const LoginView(): HomeView(),
+        home: FirebaseAuth.instance.currentUser == null? LoginView(): HomeView(),
       ),
     );
   }

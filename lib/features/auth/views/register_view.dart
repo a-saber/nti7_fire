@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:nti7_fire/core/helper/my_navigator.dart';
+import 'package:nti7_fire/features/home/views/home_view.dart';
 
 import '../../../core/components/custom_btn.dart';
 import '../../../core/components/custom_text_field.dart';
@@ -63,6 +65,7 @@ class _RegisterViewState extends State<RegisterView> {
         email: email.text,
         password: password.text,
       );
+
       await FirebaseFirestore.instance.collection('users').doc(credential.user?.uid)
       .set({
         'name': name.text,
@@ -73,6 +76,7 @@ class _RegisterViewState extends State<RegisterView> {
         isLoading = false;
       });
       showCustomSnackBar(context, text: 'Success\n${credential.user?.uid}', status: SnackBarStatus.success);
+      goTo(context, page: HomeView(), state: MyNavigatorState.pushRemove);
     } on FirebaseAuthException catch (e) {
       print(e.toString());
       String errorMessage = '${e.code} ${e.message}';

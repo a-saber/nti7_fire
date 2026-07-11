@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
-enum NavigatorState { push, pushReplace, pushRemove }
+enum MyNavigatorState { push, pushReplace, pushRemove }
 
 Future<T?> goTo<T>(
   context, {
   required Widget page,
-  NavigatorState state = NavigatorState.push,
+  MyNavigatorState state = MyNavigatorState.push,
 })async {
   var pageRoute = MaterialPageRoute<T>(builder: (context) => page);
 
   switch (state) {
-    case NavigatorState.push:
+    case MyNavigatorState.push:
       return Navigator.push<T>(context, pageRoute);
-    case NavigatorState.pushReplace:
+    case MyNavigatorState.pushReplace:
       return Navigator.pushReplacement(context, pageRoute);
-    case NavigatorState.pushRemove:
+    case MyNavigatorState.pushRemove:
       return Navigator.pushAndRemoveUntil<T>(context, pageRoute, (r) => false);
 
   }

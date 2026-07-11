@@ -6,66 +6,59 @@ import 'package:nti7_fire/core/components/custom_btn.dart';
 import 'package:nti7_fire/core/components/custom_text_field.dart';
 import 'package:nti7_fire/core/helper/show_snack_bar.dart';
 
-class AddTaskView extends StatefulWidget {
-  const AddTaskView({super.key});
+class AddPostView extends StatefulWidget {
+  const AddPostView({super.key});
 
   @override
-  State<AddTaskView> createState() => _AddTaskViewState();
+  State<AddPostView> createState() => _AddPostViewState();
 }
 
-class _AddTaskViewState extends State<AddTaskView> {
+class _AddPostViewState extends State<AddPostView> {
   var title = TextEditingController();
-  var desc = TextEditingController();
   bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Add Task')),
+      appBar: AppBar(title: Text('New Post')),
       body: SingleChildScrollView(
         padding: REdgeInsets.symmetric(horizontal: 20),
         child: Column(
           children: [
             SizedBox(height: 30),
             CustomTextField(controller: title, hintText: 'Title'),
-            SizedBox(height: 20),
-            CustomTextField(controller: desc, hintText: 'Desc'),
             SizedBox(height: 30),
 
             if(isLoading)
               CircularProgressIndicator()
             else
-            CustomBtn(text: 'Add Task', onTap: addTask),
+            CustomBtn(text: 'Submit', onTap: newPost),
           ],
         ),
       ),
     );
   }
 
-  addTask() async{
-    try {
+  newPost() async{
+    try{
       setState(() {
         isLoading = true;
       });
-      var result = await FirebaseFirestore.instance
-          .collection('users')
-          .doc(FirebaseAuth.instance.currentUser?.uid)
-          .collection('tasks')
-          .add({
-        'title': title.text,
-        'desc': desc.text
-      });
-      // print(result);
-      setState(() {
-        isLoading = false;
-      });
-      showCustomSnackBar(context, text: 'Success', status: SnackBarStatus.success);
-    } catch (e) {
-      print(e.toString());
-      setState(() {
-        isLoading = false;
-      });
-      showCustomSnackBar(context, text: 'Error', status: SnackBarStatus.fail);
 
+      await FirebaseFirestore.instance
+      .collection('posts').add({
+        'title': title.text,
+        'user_id': FirebaseAuth.instance.currentUser?.uid
+      });
+      setState(() {
+        isLoading = false;
+      });
+      showCustomSnackBar(context, text: 'Post published', status: SnackBarStatus.success);
     }
+        catch(e){
+          showCustomSnackBar(context, text: 'Post Failed', status: SnackBarStatus.fail);
+          setState(() {
+            isLoading = false;
+          });
+        }
   }
 }
