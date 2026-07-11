@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:nti7_fire/core/helper/my_navigator.dart';
+import 'package:nti7_fire/features/home/views/add_task_view.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -32,6 +34,10 @@ class HomeView extends StatelessWidget {
           },
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+          onPressed: (){
+            goTo(context, page: AddTaskView());
+          }),
       // body: FutureBuilder(
       //     future: future, builder: builder),
     );

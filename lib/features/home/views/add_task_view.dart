@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nti7_fire/core/components/custom_btn.dart';
@@ -45,9 +46,11 @@ class _AddTaskViewState extends State<AddTaskView> {
       setState(() {
         isLoading = true;
       });
-      var result = await FirebaseFirestore.instance.collection('tasks')
-          .doc('1')
-          .set({
+      var result = await FirebaseFirestore.instance
+          .collection('users')
+          .doc(FirebaseAuth.instance.currentUser?.uid)
+          .collection('tasks')
+          .add({
         'title': title.text,
         'desc': desc.text
       });
