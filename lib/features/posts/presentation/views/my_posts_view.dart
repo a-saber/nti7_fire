@@ -17,7 +17,7 @@ class MyPostsView extends StatelessWidget {
       body: FutureBuilder(
           future: FirebaseFirestore.instance.collection('posts')
               .where('user_id', isEqualTo: FirebaseAuth.instance.currentUser?.uid)
-          // .orderBy(field)
+          // .orderBy('created_at', descending: true)
               .get(),
           builder: (context, snapshot){
             if(snapshot.hasError){
@@ -27,9 +27,17 @@ class MyPostsView extends StatelessWidget {
           var posts = snapshot.data?.docs;
           return ListView.separated(
             padding: REdgeInsets.all(20),
-            itemBuilder: (context, index) => PostItemBuilder(
-              data: posts?[index].data() ??{},
-              postId: posts![index].id,
+            itemBuilder: (context, index) => Dismissible(
+              key: Key('1'),
+              onDismissed: (ds) async{
+                await FirebaseFirestore.instance.collection('posts')
+                    .doc(posts[index].id).delete();
+              },
+
+              child: PostItemBuilder(
+                data: posts?[index].data() ??{},
+                postId: posts![index].id,
+              ),
             ),
             separatorBuilder:  (context, index) =>SizedBox(height: 20,),
             itemCount: posts?.length??0,

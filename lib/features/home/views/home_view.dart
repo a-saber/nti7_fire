@@ -7,6 +7,7 @@ import 'package:nti7_fire/features/auth/views/login_view.dart';
 import 'package:nti7_fire/features/posts/presentation/views/add_post_view.dart';
 
 import '../../posts/presentation/views/my_posts_view.dart';
+import '../../posts/presentation/views/widgets/post_item_builder.dart';
 
 class HomeView extends StatelessWidget {
   const HomeView({super.key});
@@ -96,6 +97,28 @@ class HomeView extends StatelessWidget {
         child: Icon(Icons.add_box_rounded),
         onPressed: () => goTo(context, page: AddPostView()),
       ),
+      body: FutureBuilder(
+          future: FirebaseFirestore.instance.collection('posts')
+          .orderBy('created_at', descending: true)
+              .get(),
+          builder: (context, snapshot){
+            if(snapshot.hasError){
+              return Text('error');
+            }
+            if(snapshot.hasData && snapshot.connectionState == ConnectionState.done){
+              var posts = snapshot.data?.docs;
+              return ListView.separated(
+                padding: REdgeInsets.all(20),
+                itemBuilder: (context, index) => PostItemBuilder(
+                  data: posts?[index].data() ??{},
+                  postId: posts![index].id,
+                ),
+                separatorBuilder:  (context, index) =>SizedBox(height: 20,),
+                itemCount: posts?.length??0,
+              );
+            }
+            return Center(child: CircularProgressIndicator());
+          }),
     );
   }
 }
