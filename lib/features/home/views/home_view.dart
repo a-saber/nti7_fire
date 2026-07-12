@@ -3,7 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:nti7_fire/core/helper/my_navigator.dart';
-import 'package:nti7_fire/features/home/views/add_post_view.dart';
+import 'package:nti7_fire/features/auth/views/login_view.dart';
+import 'package:nti7_fire/features/posts/presentation/views/add_post_view.dart';
 
 import '../../posts/presentation/views/my_posts_view.dart';
 
@@ -79,10 +80,20 @@ class HomeView extends StatelessWidget {
               onTap: (){},
               trailing: Icon(Icons.arrow_forward),
             ),
+            Spacer(),
+            ListTile(
+              title: Text('Logout'),
+              leading: Icon(Icons.logout),
+              onTap: (){
+                FirebaseAuth.instance.signOut();
+                goTo(context, page: LoginView(), state: MyNavigatorState.pushRemove);
+              },
+            ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add_box_rounded),
         onPressed: () => goTo(context, page: AddPostView()),
       ),
     );

@@ -47,7 +47,8 @@ class _AddPostViewState extends State<AddPostView> {
       await FirebaseFirestore.instance
       .collection('posts').add({
         'title': title.text,
-        'user_id': FirebaseAuth.instance.currentUser?.uid
+        'user_id': FirebaseAuth.instance.currentUser?.uid,
+        'created_at': DateTime.now()
       });
       setState(() {
         isLoading = false;

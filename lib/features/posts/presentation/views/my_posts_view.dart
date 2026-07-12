@@ -29,6 +29,7 @@ class MyPostsView extends StatelessWidget {
             padding: REdgeInsets.all(20),
             itemBuilder: (context, index) => PostItemBuilder(
               data: posts?[index].data() ??{},
+              postId: posts![index].id,
             ),
             separatorBuilder:  (context, index) =>SizedBox(height: 20,),
             itemCount: posts?.length??0,

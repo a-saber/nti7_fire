@@ -66,7 +66,8 @@ class _RegisterViewState extends State<RegisterView> {
         password: password.text,
       );
 
-      await FirebaseFirestore.instance.collection('users').doc(credential.user?.uid)
+      await FirebaseFirestore.instance.collection('users')
+          .doc(credential.user?.uid)
       .set({
         'name': name.text,
         'email': email.text,
@@ -80,11 +81,6 @@ class _RegisterViewState extends State<RegisterView> {
     } on FirebaseAuthException catch (e) {
       print(e.toString());
       String errorMessage = '${e.code} ${e.message}';
-      if (e.code == 'weak-password') {
-        errorMessage =  'The password provided is too weak.';
-      } else if (e.code == 'email-already-in-use') {
-        errorMessage = 'The account already exists for that email.';
-      }
       setState(() {
         isLoading = false;
       });

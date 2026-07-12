@@ -79,10 +79,14 @@ class _LoginViewState extends State<LoginView> {
         status: SnackBarStatus.fail,
       );
     } catch (e) {
+      String errorMsg = 'Error';
+      if(e is FirebaseAuthException){
+        errorMsg = '${e.code} ${e.message}';
+      }
       setState(() {
         isLoading = false;
       });
-      showCustomSnackBar(context, text: 'Error', status: SnackBarStatus.fail);
+      showCustomSnackBar(context, text: errorMsg, status: SnackBarStatus.fail);
     }
   }
 }
