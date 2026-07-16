@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -47,11 +48,42 @@ class ProfileView extends StatelessWidget {
                 SizedBox(height: 30,),
 
                 if(userId != FirebaseAuth.instance.currentUser?.uid)
-                CustomBtn(text: 'Chat With', onTap: (){
-                  goTo(context, page: ChatView(
-                    userId: userId,
-                    userData: userData,
-                  ));
+                CustomBtn(text: 'Chat With', onTap: ()async{
+    try{
+      // check if chat exist for these two users
+      String chatId;
+
+      var result = await FirebaseFirestore.instance.collection('chat').where(
+        'users',isEqualTo: [
+        FirebaseAuth.instance.currentUser?.uid??'',
+        userId
+      ]..sort()
+      ).get();
+      if(result.docs.isEmpty){
+        var newChat = await FirebaseFirestore.instance.collection('chat')
+            .add({
+          'users': [
+            FirebaseAuth.instance.currentUser?.uid,
+            userId
+          ]..sort()
+        });
+        chatId = newChat.id;
+      }
+      else{
+        chatId = result.docs.first.id;
+      }
+
+      goTo(context, page: ChatView(
+        chatId: chatId,
+        userId: userId,
+        userData: userData,
+      ));
+    }
+    catch(e){
+      print('error ${e.toString()}');
+    }
+
+
                 })
               ],
             ),
